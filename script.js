@@ -8,18 +8,29 @@ const allClear = document.querySelector('.clear');
 const number = document.querySelectorAll('.number');
 const deleteNum = document.querySelector('.delete');
 const operatorButton = document.querySelectorAll('.operator');
+const curTime = document.querySelector('.current-time');
 
+setInterval(() => {
+  let time = new Date();
+  curTime.innerHTML = time.toLocaleTimeString([], {timeStyle: 'short'});
+});
 function clear() {
   currentOperationScreen.textContent = '0';
   firstOperand = '';
   secondOperand = '';
   currentOperation = null;
   allClear.textContent = 'AC';
+  operatorButton.forEach(buttons => {
+    buttons.classList.remove('select');
+  });
 }
 
 function resetScreen() {
   currentOperationScreen.textContent = '';
   shouldResetScreen = false;
+  operatorButton.forEach(buttons => {
+    buttons.classList.remove('select');
+  });
 }
 
 function deleteNumber() {
@@ -31,7 +42,12 @@ function deleteNumber() {
 
 //Operator Button (-, +, ÷, x, =)
 operatorButton.forEach(buttons => {
-  buttons.addEventListener('click', () => setOperator(buttons.textContent));
+  buttons.addEventListener('click', () => {
+    setOperator(buttons.textContent);
+    if (buttons.textContent != '=') {
+      buttons.classList.add('select');
+    }
+  });
 });
 
 // Number Button (., 1, 2, 3, 4, 5, 6, 7, 8, 9)

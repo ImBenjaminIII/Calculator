@@ -1,23 +1,42 @@
 let shouldResetScreen = false;
 let currentOperation = null;
+let negationResetScreen = false;
+let negations = false;
 let firstOperand = '';
 let secondOperand = '';
 
 const currentOperationScreen = document.querySelector('.current-operation');
 const allClear = document.querySelector('.clear');
 const number = document.querySelectorAll('.number');
-const deleteNum = document.querySelector('.delete');
 const operatorButton = document.querySelectorAll('.operator');
 const curTime = document.querySelector('.current-time');
+const negation = document.querySelector('.negation');
+
+negation.addEventListener('click', addNegation);
+
+function addNegation() {
+  if (negations) {
+    currentOperationScreen.textContent =
+      currentOperationScreen.textContent.slice(1);
+    negations = false;
+    negationResetScreen = false;
+  } else {
+    currentOperationScreen.textContent = `-${currentOperationScreen.textContent}`;
+    negations = true;
+    negationResetScreen = true;
+  }
+}
 
 setInterval(() => {
   let time = new Date();
   curTime.innerHTML = time.toLocaleTimeString([], {timeStyle: 'short'});
 });
+
 function clear() {
   currentOperationScreen.textContent = '0';
   firstOperand = '';
   secondOperand = '';
+  negations = false;
   currentOperation = null;
   allClear.textContent = 'AC';
   operatorButton.forEach(buttons => {
@@ -31,13 +50,6 @@ function resetScreen() {
   operatorButton.forEach(buttons => {
     buttons.classList.remove('select');
   });
-}
-
-function deleteNumber() {
-  currentOperationScreen.textContent = currentOperationScreen.textContent.slice(
-    0,
-    -1
-  );
 }
 
 //Operator Button (-, +, ÷, x, =)
@@ -54,11 +66,17 @@ operatorButton.forEach(buttons => {
 number.forEach(number => {
   number.addEventListener('click', () => {
     // Reset the screen for the next operand
+    if (negationResetScreen) {
+      currentOperationScreen.textContent =
+        currentOperationScreen.textContent.charAt(0);
+      negationResetScreen = false;
+      return;
+    }
     if (currentOperationScreen.textContent == '0' || shouldResetScreen) {
       resetScreen();
       allClear.textContent = 'C';
     }
-    currentOperationScreen.innerHTML += number.textContent;
+    currentOperationScreen.textContent += number.textContent;
   });
 });
 
@@ -70,6 +88,7 @@ function setOperator(operator) {
   firstOperand = currentOperationScreen.textContent;
   currentOperation = operator;
   shouldResetScreen = true;
+  negationResetScreen = false;
 }
 
 // Evaluate the expression
@@ -115,4 +134,3 @@ function roundResult(number) {
 }
 
 allClear.addEventListener('click', clear);
-deleteNum.addEventListener('click', deleteNumber);

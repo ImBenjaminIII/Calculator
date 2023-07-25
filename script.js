@@ -37,6 +37,7 @@ function clear() {
   firstOperand = '';
   secondOperand = '';
   negations = false;
+  negationResetScreen = false;
   currentOperation = null;
   allClear.textContent = 'AC';
   operatorButton.forEach(buttons => {

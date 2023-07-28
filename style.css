@@ -11,10 +11,11 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: deeppink;
+  background-color: darkorange;
 }
 
 .calculator {
+  box-shadow: rgb(0, 0, 1, 1) 0px 3px 15px;
   background-color: black;
   border: 10px solid white;
   width: 300px;
@@ -26,11 +27,16 @@ main {
 }
 
 .notif {
+  padding: 0px 5px 0px 5px;
   display: flex;
   color: white;
   height: 20px;
 }
 
+.current-time {
+  font-size: small;
+  font-weight: 600;
+}
 .current-time,
 .drop {
   margin-right: auto;
